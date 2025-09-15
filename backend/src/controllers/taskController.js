@@ -40,21 +40,40 @@ export const updateTask = async (req, res) => {
   const io = req.io;
   const { taskId } = req.params;
   const updates = req.body;
-  const task = await Task.findById(taskId);
+
+  let task = await Task.findById(taskId);
   if (!task) return res.status(404).json({ message: "Task not found" });
 
-    // check if user is in project.members OR createdBy
-  const isMember = task.project.members.map(String).includes(String(req.user._id));
-  const isCreator = String(task.project.createdBy) === String(req.user._id);
+  // Validate membership (load project to check members)
+  const project = await Project.findById(task.project);
+  if (!project) return res.status(404).json({ message: "Project not found" });
 
+  const isMember = project.members.map(String).includes(String(req.user._id));
+  const isCreator = String(project.createdBy) === String(req.user._id);
   if (!isMember && !isCreator) {
     return res.status(403).json({ message: "Forbidden: not a project member" });
   }
 
+  const prevStatus = task.status;
   const prevAssignee = task.assignee ? String(task.assignee) : null;
+
+  // apply updates
   Object.assign(task, updates);
   await task.save();
 
+  // 🔹 if status changed, we notify frontend to move task between columns
+  if (updates.status && updates.status !== prevStatus) {
+    if (io) {
+      io.to(String(task.project)).emit("task:statusChanged", {
+        taskId: task._id,
+        prevStatus,
+        newStatus: task.status,
+        task
+      });
+    }
+  }
+
+  // 🔹 notify if assignee changed
   if (updates.assignee && String(updates.assignee) !== prevAssignee) {
     await pushNotification({
       userId: updates.assignee,
@@ -75,13 +94,42 @@ export const updateTask = async (req, res) => {
     if (io) io.to(prevAssignee).emit("notification", { message: `Unassigned: ${task.title}`, task });
   }
 
-  // broadcast task updated to project room
+  // 🔹 always broadcast generic task update
   if (io) io.to(String(task.project)).emit("task:updated", task);
+
   res.json(task);
 };
+
 
 export const getTasksByProject = async (req, res) => {
   const { projectId } = req.params;
   const tasks = await Task.find({ project: projectId }).populate("assignee", "name email").lean();
-  res.json(tasks);
+  
+  const grouped = {
+    todo: [],
+    inProgress: [],
+    inReview: [],
+    done: []
+  };
+
+  tasks.foeEach(task => {
+    switch (task.status) {
+      case "To Do":
+        grouped.todo.push(task);
+        break;
+      case "In Progress":
+        grouped.inProgress.push(task);
+        break;
+      case "In Review":
+        grouped.inReview.push(task);
+        break;
+      case "Done":
+        grouped.done.push(task);
+        break;
+      default:
+        grouped.todo.push(task);
+    }
+  });
+  
+  res.json(grouped);
 };

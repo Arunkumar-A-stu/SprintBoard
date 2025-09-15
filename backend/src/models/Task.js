@@ -8,7 +8,6 @@ const taskSchema = new mongoose.Schema({
   status: { type: String, enum: ["To Do", "In Progress", "In Review", "Done"], default: "To Do" },
   priority: { type: String, enum: ["Low", "Normal", "High", "Urgent"], default: "Normal" },
   dueDate: Date,
-  progress: { type: Number, default: 0 },
   order: { type: Number, default: 0 }, // for Kanban drag/drop
 }, { timestamps: true });
 
