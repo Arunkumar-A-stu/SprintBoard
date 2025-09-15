@@ -1,0 +1,93 @@
+.signup-pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6;
+  padding: 16px;
+}
+
+.signup-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: 1100px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(31, 45, 61, 0.08);
+}
+
+.signup-leftPane {
+  background-color: #f3f3ff;
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-illustrationWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(20, 184, 166, 0.15));
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-rocket { position: absolute; top: 16px; left: 24px; font-size: 28px; }
+.signup-avatar { font-size: 80px; }
+.signup-stars { position: absolute; bottom: 20px; right: 24px; opacity: 0.8; }
+
+.signup-rightPane {
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.signup-brandRow { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.signup-logoMark {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: linear-gradient(135deg, #7c3aed, #6366f1); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-weight: 700;
+}
+.signup-brandName { font-size: 18px; font-weight: 700; color: #2b2e3a; }
+
+.signup-title { margin: 6px 0 6px; font-size: 22px; color: #2b2e3a; }
+.signup-subtitle { margin: 0 0 20px; color: #7a7f89; font-size: 14px; }
+
+.signup-form { display: flex; flex-direction: column; }
+.signup-label { font-size: 13px; color: #4b5563; margin-bottom: 6px; }
+.mt-12 { margin-top: 12px; }
+.pr-40 { padding-right: 40px !important; }
+.signup-input {
+  height: 42px; border-radius: 8px; border: 1px solid #e5e7eb; padding: 0 12px; outline: none; font-size: 14px; background-color: #fff; width: 100%; box-sizing: border-box;
+}
+
+.signup-passwordField { position: relative; }
+.signup-eyeButton { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border: none; background: transparent; cursor: pointer; font-size: 18px; }
+
+.signup-rowBetween { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; margin-bottom: 12px; }
+.signup-checkboxLabel { display: flex; align-items: center; gap: 8px; color: #4b5563; font-size: 14px; }
+.signup-checkbox { width: 16px; height: 16px; }
+
+.signup-submitButton { height: 44px; border: none; border-radius: 8px; background: #6366f1; color: #fff; font-weight: 700; letter-spacing: .4px; cursor: pointer; margin-top: 6px; }
+
+.signup-signupRow { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; color: #6b7280; font-size: 14px; }
+.signup-signupLink { color: #6366f1; text-decoration: none; font-weight: 600; }
+
+.signup-dividerRow { display: flex; align-items: center; gap: 10px; margin: 18px 0 10px; }
+.signup-divider { flex: 1; height: 1px; background: #e5e7eb; }
+.signup-or { color: #9ca3af; font-size: 12px; }
+
+.signup-socialRow, .signup-socialBtn { display: none; }
+
+@media (max-width: 900px) {
+  .signup-card { grid-template-columns: 1fr; }
+}
+
+
